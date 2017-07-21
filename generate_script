@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+# Concatenate all the source files and dump a single file script to STDOUT.
+
+script = <<-EOF
+#!/usr/bin/env ruby
+
+require 'trello'
+
+EOF
+
+Dir["#{File.expand_path('../', __FILE__)}/lib/*.rb"].each do |source_file|
+  lines = File.readlines(source_file)
+  lines_without_requires = lines.reject do |line|
+    line.match(/\Arequire_relative/)
+  end
+
+  script << lines_without_requires.join
+  script << "\n"
+end
+
+# After the removal of "require_relative"-lines, there will double empty lines
+# here and there that can be removed.
+script.gsub!("\n\n\n", "\n\n")
+
+script << <<-EOF
+
+CLI.new.run
+EOF
+
+puts script

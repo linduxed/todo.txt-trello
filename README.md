@@ -17,13 +17,25 @@ With this setup, with just a small token added to the tasks which have a corresp
 Start by cloning this repo.
 As with all other add-ons, you'll need to place an executable in your `~/.todo.actions.d` folder (see [Installing Addons](https://github.com/ginatrapani/todo.txt-cli/wiki/Creating-and-Installing-Add-ons) for more information).
 
-For this add-on, you can either create a symlink in the `~/.todo.actions.d` folder pointing to the executable ([`bin/mit`](bin/mit)).
+For this add-on, you can either create a symlink in the `~/.todo.actions.d` folder pointing to the executable ([`bin/trello`](bin/trello)), or generate a single file script that you can place in said folder.
+
+#### Symlink
+
+```plain
+$ ln -s ~/.todo.actions.d/trello /foo/bar/todo.txt-trello/bin/trello
+```
+
+#### Generated script
+
+```plain
+$ /foo/bar/todo.txt-trello/generate_script > ~/.todo.actions.d/trello
+$ chmod +x ~/.todo.actions.d/trello
+```
 
 You need Ruby, but any non-deprecated version of Ruby should work fine.
 The `ruby-trello` gem needs to be installed.
 
 ```plain
-$ ln -s ~/.todo.actions.d/trello /foo/bar/todo.txt-mit/bin/trello
 $ gem install ruby-trello
 ```
 
