@@ -17,9 +17,13 @@ class Executable
   end
 
   def run
-    _, @stdout, @stderr, @wait_thr = Open3.popen3(
-      "#{binary_location} #{@args_string}"
-    )
+    # NOTE: The "padding" word in the following command is necessary because
+    # regular invocations of the add-on will have all arguments placed on and
+    # after ARGV[1]. For more information, read the comment in
+    # CLI#usage_requested_from_todo_help?.
+    command = "#{binary_location} padding #{@args_string}"
+
+    _, @stdout, @stderr, @wait_thr = Open3.popen3(command)
   end
 
   def lines
