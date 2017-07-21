@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'trello'
+
+require_relative '../lib/cli'
+
+CLI.new.run
