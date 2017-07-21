@@ -41,7 +41,7 @@ $ gem install ruby-trello
 
 ## Configuration
 
-The configuration for the add-on is put in the `TODO_FILE/trello.yml` file:
+The configuration for the add-on is put in the `TODO_FILE/trello_config.yml` file:
 
 ```yaml
 developer_api_key: "32 character string"
