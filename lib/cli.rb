@@ -1,3 +1,5 @@
+require_relative './constants'
+
 # Main class for user interaction.
 class CLI
   def run
@@ -7,6 +9,8 @@ class CLI
         usage_message
       when %w(usage -h --help).include?(ARGV[1])
         usage_message
+      when %w(-v --version).include?(ARGV[1])
+        version_message
       end
 
     $stdout.puts output
@@ -38,12 +42,17 @@ class CLI
         various cards on the configured Trello board is stored in the
         trello_cards.yml file.
 
-        trello [-h|--help]
+        trello [-h|--help|-v|--version]
 
         -h, --help      Displays help message.
+        -v, --version   Displays version information.
     EOF
 
     # Remove leading indentation
     usage_message.gsub(/^#{usage_message.scan(/^[ \t]*(?=\S)/).min}/, '')
+  end
+
+  def version_message
+    "trello #{Constants::VERSION}"
   end
 end
