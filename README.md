@@ -2,12 +2,12 @@
 
 This is an add-on for the [`todo.txt-cli`](https://github.com/ginatrapani/todo.txt-cli/), for synchronizing Trello cards with the tasks in the `TODO_FILE`.
 
-The idea is that a small token is added at the end of the various tasks in one's `TODO_FILE`, which corresponds to a URL that is saved in "mapping file" called `TODO_DIR/trello_cards`.
-Sample `trello_cards` file below:
+The idea is that a small token is added at the end of the various tasks in one's `TODO_FILE`, which corresponds to a URL that is saved in "mapping file" called `TODO_DIR/trello_cards.yml`.
+Sample `trello_cards.yml` file below:
 
 ```plain
-ABC=https://trello.com/c/foo/bar
-DEF=https://trello.com/c/baz/quux
+ABC: https://trello.com/c/foo/bar
+DEF: https://trello.com/c/baz/quux
 ```
 
 With this setup, with just a small token added to the tasks which have a corresponding Trello task, synchronizing the addition and completion of Trello cards can be done with a few simple commands.
