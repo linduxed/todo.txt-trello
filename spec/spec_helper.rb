@@ -52,17 +52,23 @@ class Executable
   end
 end
 
-def with_todo_file(todos)
+def with_todo_file_and_database(todos, database_entries)
   todo_file = Tempfile.new('todo.txt')
   todos.gsub!(/^\s+/, '')
   todo_file.write(todos)
   todo_file.rewind
 
+  database = Tempfile.new('trello_cards.yml')
+  database.write(database_entries)
+  database.rewind
+
   env_extension = {
     'TODO_FILE' => todo_file.path,
+    'TODO_TRELLO_DATABASE' => database.path,
   }
 
-  yield(todo_file, env_extension)
+  yield(todo_file, database, env_extension)
 
   todo_file.delete
+  database.delete
 end
