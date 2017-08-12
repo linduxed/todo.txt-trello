@@ -1,4 +1,6 @@
 require_relative './constants'
+require_relative './database'
+require_relative './todo_file_mutator'
 
 # Main class for user interaction.
 class CLI
@@ -11,6 +13,21 @@ class CLI
         usage_message
       when %w(-v --version).include?(ARGV[1])
         version_message
+      when ARGV[1] == 'link'
+        db = Database.new(ENV['TODO_TRELLO_DATABASE'])
+        db_record = db.add_record(url: ARGV[3])
+        trello_tag = db_record.keys.first
+
+        todo_number = ARGV[2].to_i
+        all_todos = File.readlines(ENV['TODO_FILE'])
+        chosen_todo = all_todos[todo_number - 1].chomp
+
+        TodoFileMutator.new(ENV['TODO_FILE']).add_tag_to_todo(
+          todo_number: todo_number,
+          trello_tag: trello_tag,
+        )
+
+        "#{chosen_todo} tr:#{trello_tag}"
       end
 
     $stdout.puts output
