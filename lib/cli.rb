@@ -16,7 +16,7 @@ class CLI
       when ARGV[1] == 'link'
         db = Database.new(ENV['TODO_TRELLO_DATABASE'])
         db_record = db.add_record(url: ARGV[3])
-        trello_tag = db_record.keys.first
+        trello_tag = db_record.tag
 
         todo_number = ARGV[2].to_i
         all_todos = File.readlines(ENV['TODO_FILE'])
