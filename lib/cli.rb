@@ -1,6 +1,6 @@
 require_relative './constants'
 require_relative './database'
-require_relative './todo_file_mutator'
+require_relative './todo_file'
 
 # Main class for user interaction.
 class CLI
@@ -18,16 +18,16 @@ class CLI
         db_record = db.add_record(url: ARGV[3])
         trello_tag = db_record.tag
 
-        todo_number = ARGV[2].to_i
-        all_todos = File.readlines(ENV['TODO_FILE'])
-        chosen_todo = all_todos[todo_number - 1].chomp
+        todo_file = TodoFile.new(ENV['TODO_FILE'])
 
-        TodoFileMutator.new(ENV['TODO_FILE']).add_tag_to_todo(
-          todo_number: todo_number,
+        todo_file.add_tag_to_todo(
+          todo_number: ARGV[2].to_i,
           trello_tag: trello_tag,
         )
 
-        "#{chosen_todo} tr:#{trello_tag}"
+        modified_todo = todo_file.find_todo(number: ARGV[2].to_i)
+
+        "#{modified_todo}"
       end
 
     $stdout.puts output

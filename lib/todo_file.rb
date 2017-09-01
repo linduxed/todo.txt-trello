@@ -1,4 +1,4 @@
-class TodoFileMutator
+class TodoFile
   def initialize(todo_file_path)
     @todo_file_path = todo_file_path
   end
@@ -11,5 +11,10 @@ class TodoFileMutator
 
     todos[todo_number - 1] = todo_with_tag
     File.write(@todo_file_path, todos.join)
+  end
+
+  def find_todo(number:)
+    todos = File.readlines(@todo_file_path)
+    todos[number - 1].chomp
   end
 end
