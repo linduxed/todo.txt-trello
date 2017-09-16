@@ -14,7 +14,7 @@ class CLI
       when %w(-v --version).include?(ARGV[1])
         version_message
       when ARGV[1] == 'link' && ARGV[2] && ARGV[3]
-        db = Database.new(ENV['TODO_TRELLO_DATABASE'])
+        db = Database.new(Constants::CARD_DATABASE_PATH)
         db_record = db.add_record(url: ARGV[3])
         trello_tag = db_record.tag
 
