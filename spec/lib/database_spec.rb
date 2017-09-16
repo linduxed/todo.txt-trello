@@ -14,6 +14,15 @@ RSpec.describe Database do
 
       expect(FileUtils).to have_received(:touch).with(file_name)
     end
+
+    it 'raises error if database can not be parsed as a YAML file' do
+      allow(FileUtils).to receive(:touch)
+      allow(File).to receive(:read).and_return('foobar')
+      allow(YAML).to receive(:safe_load).and_raise
+      db = Database.new(random_file_name)
+
+      expect { db.add_record(url: 'foo.bar') }.to raise_error(Database::BadDatabase)
+    end
   end
 
   def random_file_name

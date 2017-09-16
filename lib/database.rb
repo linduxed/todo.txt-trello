@@ -2,6 +2,8 @@ require 'yaml'
 require 'fileutils'
 
 class Database
+  class BadDatabase < StandardError; end
+
   def initialize(database_path)
     @database_path = database_path
   end
@@ -34,10 +36,19 @@ class Database
   end
 
   def all_records
-    @all_records ||=
-      YAML.safe_load(File.read(@database_path)).map do |tag, attrs|
-        Record.new(tag: tag, url: attrs["url"], state: attrs["state"])
-      end
+    @all_records ||= database_from_yaml.map do |tag, attrs|
+      Record.new(tag: tag, url: attrs["url"], state: attrs["state"])
+    end
+  end
+
+  def database_from_yaml
+    raw_database = File.read(@database_path)
+
+    begin
+      YAML.safe_load(raw_database)
+    rescue
+      raise BadDatabase, 'Could not parse database as YAML'
+    end
   end
 
   def records_to_yaml(records)
