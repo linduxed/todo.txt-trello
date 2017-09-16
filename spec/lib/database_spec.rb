@@ -23,6 +23,15 @@ RSpec.describe Database do
 
       expect { db.add_record(url: 'foo.bar') }.to raise_error(Database::BadDatabase)
     end
+
+    it 'does not raise an error if database is empty' do
+      allow(FileUtils).to receive(:touch)
+      allow(File).to receive(:read).and_return('')
+      allow(File).to receive(:write)
+      db = Database.new(random_file_name)
+
+      expect { db.add_record(url: 'foo.bar') }.not_to raise_error
+    end
   end
 
   def random_file_name

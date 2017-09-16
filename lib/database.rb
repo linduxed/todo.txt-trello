@@ -45,10 +45,14 @@ class Database
     raw_database = File.read(@database_path)
 
     begin
-      YAML.safe_load(raw_database)
+      yaml = YAML.safe_load(raw_database)
     rescue
       raise BadDatabase, 'Could not parse database as YAML'
     end
+
+    # YAML.safe_load does not raise on an empty file, it just returns nil.
+    # For our purposes it's more useful to always return a hash.
+    yaml || {}
   end
 
   def records_to_yaml(records)
