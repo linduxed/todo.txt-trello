@@ -1,4 +1,5 @@
 require 'yaml'
+require 'fileutils'
 
 class Database
   def initialize(database_path)
@@ -6,12 +7,18 @@ class Database
   end
 
   def add_record(url:, state: 'open')
+    create_database_if_it_does_not_exist
+
     new_record = Record.new(tag: available_tag, url: url, state: state)
     write_record(new_record)
     new_record
   end
 
   private
+
+  def create_database_if_it_does_not_exist
+    FileUtils.touch(@database_path)
+  end
 
   def write_record(record)
     File.write(@database_path, records_to_yaml(all_records + [record]))
