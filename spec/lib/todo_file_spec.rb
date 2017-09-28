@@ -25,4 +25,22 @@ RSpec.describe TodoFile do
       )
     end
   end
+
+  describe '#find_todo' do
+    it 'returns a TODO corresponding to the provided TODO number' do
+      file_name = 'some_file_name'
+      allow(File).to receive(:readlines).with(file_name).and_return(
+        [
+          "First TODO\n",
+          "Second TODO\n",
+          "Third TODO\n",
+        ]
+      )
+      todo_file = TodoFile.new(file_name)
+
+      found_todo = todo_file.find_todo(number: 2)
+
+      expect(found_todo).to eq('Second TODO')
+    end
+  end
 end
