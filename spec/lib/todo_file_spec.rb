@@ -24,6 +24,17 @@ RSpec.describe TodoFile do
           "Third TODO\n"
       )
     end
+
+    it 'raises error if bad TODO number is provided' do
+      file_name = 'some_file_name'
+      allow(File).to receive(:readlines).with(file_name).and_return(["TODO\n"])
+      todo_file = TodoFile.new(file_name)
+
+      [0, -1, 100].each do |n|
+        expect { todo_file.find_todo(number: n) }.
+          to raise_error(TodoFile::BadTodoNumber)
+      end
+    end
   end
 
   describe '#find_todo' do
@@ -41,6 +52,17 @@ RSpec.describe TodoFile do
       found_todo = todo_file.find_todo(number: 2)
 
       expect(found_todo).to eq('Second TODO')
+    end
+
+    it 'raises error if bad TODO number is provided' do
+      file_name = 'some_file_name'
+      allow(File).to receive(:readlines).with(file_name).and_return(["TODO\n"])
+      todo_file = TodoFile.new(file_name)
+
+      [0, -1, 100].each do |n|
+        expect { todo_file.find_todo(number: n) }.
+          to raise_error(TodoFile::BadTodoNumber)
+      end
     end
   end
 end
