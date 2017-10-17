@@ -2,6 +2,50 @@ require 'spec_helper'
 require 'database'
 
 RSpec.describe Database do
+  describe '#find_by_url' do
+    it 'returns record in database with provided URL' do
+      url = 'https://foo.bar/baz'
+      file_name = random_file_name
+      allow(File).to receive(:read).with(file_name).and_return(
+        <<~EOF
+          ---
+          A:
+            url: example.com
+            state: open
+          B:
+            url: #{url}
+            state: open
+        EOF
+      )
+      db = Database.new(file_name)
+
+      record = db.find_by_url(url)
+
+      expect(record.url).to eq(url)
+    end
+
+    it 'returns nil if record with provided URL is not present in database' do
+      url = 'https://foo.bar/baz'
+      allow(File).to receive(:read).and_return('')
+      db = Database.new(random_file_name)
+
+      record = db.find_by_url(url)
+
+      expect(record).to be_nil
+    end
+
+    it 'returns nil if there is no database' do
+      # TODO: figure this test out
+      url = 'https://foo.bar/baz'
+      allow(File).to receive(:read).and_return('')
+      db = Database.new(random_file_name)
+
+      record = db.find_by_url(url)
+
+      expect(record).to be_nil
+    end
+  end
+
   describe '#add_record' do
     it 'creates database if not already present' do
       file_name = random_file_name

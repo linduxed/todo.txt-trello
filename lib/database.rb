@@ -8,6 +8,10 @@ class Database
     @database_path = database_path
   end
 
+  def find_by_url(url)
+    all_records.find { |record| record.url == url }
+  end
+
   def add_record(url:, state: 'open')
     create_database_if_it_does_not_exist
 
